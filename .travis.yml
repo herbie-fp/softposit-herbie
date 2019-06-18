@@ -20,9 +20,9 @@ before_install:
   - cat ../travis-racket/install-racket.sh | bash
   - export PATH="${RACKET_DIR}/bin:${PATH}"
   - git clone https://github.com/uwplse/herbie ../herbie/
-  - raco pkg install --auto $TRAVIS_BUILD_DIR/../herbie/src/
+  - raco pkg install --auto --name herbie $TRAVIS_BUILD_DIR/../herbie/src/
 install:
-  - raco pkg install --auto $TRAVIS_BUILD_DIR
+  - raco pkg install --auto --name softposit-rkt $TRAVIS_BUILD_DIR
 script:
   - echo ${JOB} && eval ${JOB}
 notifications:

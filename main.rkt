@@ -1,7 +1,6 @@
 #lang racket
 
-(require math/flonum math/bigfloat racket/lazy-require softposit-rkt)
-(require (submod herbie plugin))
+(require math/flonum math/bigfloat softposit-rkt herbie/plugin)
 
 (define ((comparator test) . args)
   (for/and ([left args] [right (cdr args)])

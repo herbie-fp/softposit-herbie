@@ -6,7 +6,7 @@ env:
       HERBIE_SEED="0"
       UNIT="raco test ."
       HERBIE="racket $TRAVIS_BUILD_DIR/../herbie/infra/travis.rkt"
-      INTEGRATION="$HERBIE --seed '${HERBIE_SEED}' herbie/bench/tutorial.fpcore herbie/bench/hamming/"
+      INTEGRATION="$HERBIE --seed '${HERBIE_SEED}' ../herbie/bench/tutorial.fpcore ../herbie/bench/hamming/"
       POSITS="$HERBIE bench/posits.fpcore"
   matrix:
     # separate builds for travis benches and unit tests

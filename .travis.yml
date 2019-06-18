@@ -22,7 +22,7 @@ before_install:
   - git clone https://github.com/uwplse/herbie ../herbie/
   - raco pkg install --auto --name herbie $TRAVIS_BUILD_DIR/../herbie/src/
 install:
-  - raco pkg install --auto --name softposit-rkt $TRAVIS_BUILD_DIR
+  - raco pkg install --auto --name softposit-herbie $TRAVIS_BUILD_DIR
 script:
   - echo ${JOB} && eval ${JOB}
 notifications:

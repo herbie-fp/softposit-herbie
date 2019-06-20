@@ -26,7 +26,6 @@ before_install:
   - cat ../travis-racket/install-racket.sh | bash
   - export PATH="${RACKET_DIR}/bin:${PATH}"
   - git clone https://github.com/uwplse/herbie ../herbie/
-  - git -C ../herbie checkout optional-posits
   - raco pkg install --auto --name herbie $TRAVIS_BUILD_DIR/../herbie/src/
 install:
   - raco pkg install --auto --name softposit-herbie $TRAVIS_BUILD_DIR

@@ -18,5 +18,5 @@ jobs:
       - name: "Install Herbie"
         run: raco pkg install --no-cache --auto --name herbie herbie/src/
       - name: "Install SoftPosit support"
-        run: raco pkg install --no-cache --auto --name softposit-herbie .
+        run: raco pkg install --no-cache --auto --name softposit-herbie ./
       - run: herbie/infra/travis.rkt bench/posits.fpcore

@@ -11,6 +11,8 @@ jobs:
       - name: "Install Racket"
         uses: Bogdanp/setup-racket@v0.5
       - uses: actions/checkout@master
+        with:
+          path: plugin
       - uses: actions/checkout@master
         with:
           repository: uwplse/herbie
@@ -18,5 +20,5 @@ jobs:
       - name: "Install Herbie"
         run: raco pkg install --no-cache --auto --name herbie herbie/src/
       - name: "Install SoftPosit support"
-        run: raco pkg install --no-cache --auto --name softposit-herbie
-      - run: herbie/infra/travis.rkt bench/posits.fpcore
+        run: raco pkg install --no-cache --auto --name softposit-herbie plugin/
+      - run: herbie/infra/travis.rkt plugin/bench/posits.fpcore

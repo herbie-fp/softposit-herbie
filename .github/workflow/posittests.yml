@@ -1,0 +1,22 @@
+name: Posit Benchmarks
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Install Packages"
+        run: sudo apt-get install -y libmpfr6 libmpfr-dev
+      - name: "Install Racket"
+        uses: Bogdanp/setup-racket@v0.5
+      - uses: actions/checkout@master
+      - uses: actions/checkout@master
+        with:
+          repository: uwplse/herbie
+          path: herbie
+      - name: "Install Herbie"
+        run: raco pkg install --no-cache --auto --name herbie herbie/src/
+      - name: "Install SoftPosit support"
+        run: raco pkg install --no-cache --auto --name softposit-herbie .
+      - run: herbie/infra/travis.rkt bench/posits.fpcore

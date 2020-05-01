@@ -1,6 +1,6 @@
 name: Posit Benchmarks
 
-on: [push]
+on: [push, repository_dispatch]
 
 jobs:
   build:

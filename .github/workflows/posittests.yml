@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@master
         with:
           path: plugin
+          ref: herbie1.4
       - name: "Check out Herbie"
         uses: actions/checkout@master
         with:

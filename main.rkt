@@ -13,12 +13,24 @@
 
 ;; Defining the types
 
-(define-type posit8 posit8? bigfloat?)
-(define-type posit16 posit16? bigfloat?)
-(define-type posit32 posit32? bigfloat?)
-(define-type quire8 quire8? bigfloat?)
-(define-type quire16 quire16? bigfloat?)
-(define-type quire32 quire32? bigfloat?)
+(define-type posit8 (posit8? bigfloat?)
+  (compose bf posit8->double)
+  (compose double->posit8 bigfloat->flonum))
+(define-type posit16 (posit16? bigfloat?)
+  (compose bf posit16->double)
+  (compose double->posit16 bigfloat->flonum))
+(define-type posit32 (posit32? bigfloat?)
+  (compose bf posit32->double)
+  (compose double->posit32 bigfloat->flonum))
+(define-type quire8 (quire8? bigfloat?)
+  (compose double->quire8 bigfloat->flonum)
+  (compose bf quire8->double))
+(define-type quire16 (quire16? bigfloat?)
+  (compose double->quire16 bigfloat->flonum)
+  (compose bf quire16->double))
+(define-type quire32 (quire32? bigfloat?)
+  (compose double->quire32 bigfloat->flonum)
+  (compose bf quire32->double))
 
 ;; Defining the representations
 

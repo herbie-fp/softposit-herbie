@@ -25,4 +25,4 @@ jobs:
         run: raco pkg install --no-cache --auto --name softposit-herbie plugin/
       - run: racket herbie/infra/travis.rkt --seed 0 plugin/bench/posits.fpcore
         env:
-          RUST_BACKTRACE: 1
+          RUST_BACKTRACE: full

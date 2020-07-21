@@ -555,8 +555,8 @@
 
 (define-ruleset commutativity.p16 (arithmetic simplify posit)
   #:type ([a posit16] [b posit16])
-  [+-commutative     (+.p16 a b)               (+.p16 b a)]
-  [*-commutative     (*.p16 a b)               (*.p16 b a)])
+  [+-commutative.p16     (+.p16 a b)               (+.p16 b a)]
+  [*-commutative.p16     (*.p16 a b)               (*.p16 b a)])
 
 ; Posit conversions
 (define-ruleset insert-p16 (arithmetic posit)
@@ -612,42 +612,42 @@
 
 (define-ruleset associativity.p16 (arithmetic simplify posit)
   #:type ([a posit16] [b posit16] [c posit16])
-  [associate-+r+  (+.p16 a (+.p16 b c))         (+.p16 (+.p16 a b) c)]
-  [associate-+l+  (+.p16 (+.p16 a b) c)         (+.p16 a (+.p16 b  c))]
-  [associate-+r-  (+.p16 a (-.p16 b c))         (-.p16 (+.p16 a b) c)]
-  [associate-+l-  (+.p16 (-.p16 a b) c)         (-.p16 a (-.p16 b c))]
-  [associate--r+  (-.p16 a (+.p16 b c))         (-.p16 (-.p16 a b) c)]
-  [associate--l+  (-.p16 (+.p16 a b) c)         (+.p16 a (-.p16 b c))]
-  [associate--l-  (-.p16 (-.p16 a b) c)         (-.p16 a (+.p16 b c))]
-  [associate--r-  (-.p16 a (-.p16 b c))         (+.p16 (-.p16 a b) c)]
-  [associate-*r*  (*.p16 a (*.p16 b c))         (*.p16 (*.p16 a b) c)]
-  [associate-*l*  (*.p16 (*.p16 a b) c)         (*.p16 a (*.p16 b c))]
-  [associate-*r/  (*.p16 a (/.p16 b c))         (/.p16 (*.p16 a b) c)]
-  [associate-*l/  (*.p16 (/.p16 a b) c)         (/.p16 (*.p16 a c) b)]
-  [associate-/r*  (/.p16 a (*.p16 b c))         (/.p16 (/.p16 a b) c)]
-  [associate-/l*  (/.p16 (*.p16 b c) a)         (/.p16 b (/.p16 a c))]
-  [associate-/r/  (/.p16 a (/.p16 b c))         (*.p16 (/.p16 a b) c)]
-  [associate-/l/  (/.p16 (/.p16 b c) a)         (/.p16 b (*.p16 a c))]
-  [sub-neg        (-.p16 a b)                   (+.p16 a (neg.p16 b))]
-  [unsub-neg      (+.p16 a (neg.p16 b))         (-.p16 a b)])
+  [associate-+r+.p16  (+.p16 a (+.p16 b c))         (+.p16 (+.p16 a b) c)]
+  [associate-+l+.p16  (+.p16 (+.p16 a b) c)         (+.p16 a (+.p16 b c))]
+  [associate-+r-.p16  (+.p16 a (-.p16 b c))         (-.p16 (+.p16 a b) c)]
+  [associate-+l-.p16  (+.p16 (-.p16 a b) c)         (-.p16 a (-.p16 b c))]
+  [associate--r+.p16  (-.p16 a (+.p16 b c))         (-.p16 (-.p16 a b) c)]
+  [associate--l+.p16  (-.p16 (+.p16 a b) c)         (+.p16 a (-.p16 b c))]
+  [associate--l-.p16  (-.p16 (-.p16 a b) c)         (-.p16 a (+.p16 b c))]
+  [associate--r-.p16  (-.p16 a (-.p16 b c))         (+.p16 (-.p16 a b) c)]
+  [associate-*r*.p16  (*.p16 a (*.p16 b c))         (*.p16 (*.p16 a b) c)]
+  [associate-*l*.p16  (*.p16 (*.p16 a b) c)         (*.p16 a (*.p16 b c))]
+  [associate-*r/.p16  (*.p16 a (/.p16 b c))         (/.p16 (*.p16 a b) c)]
+  [associate-*l/.p16  (*.p16 (/.p16 a b) c)         (/.p16 (*.p16 a c) b)]
+  [associate-/r*.p16  (/.p16 a (*.p16 b c))         (/.p16 (/.p16 a b) c)]
+  [associate-/l*.p16  (/.p16 (*.p16 b c) a)         (/.p16 b (/.p16 a c))]
+  [associate-/r/.p16  (/.p16 a (/.p16 b c))         (*.p16 (/.p16 a b) c)]
+  [associate-/l/.p16  (/.p16 (/.p16 b c) a)         (/.p16 b (*.p16 a c))]
+  [sub-neg.p16        (-.p16 a b)                   (+.p16 a (neg.p16 b))]
+  [unsub-neg.16      (+.p16 a (neg.p16 b))         (-.p16 a b)])
 
 (define-ruleset distributivity.p16 (arithmetic simplify posit)
   #:type ([a posit16] [b posit16] [c posit16])
-  [distribute-lft-in      (*.p16 a (+.p16 b c))           (+.p16 (*.p16 a b) (*.p16 a c))]
-  [distribute-rgt-in      (*.p16 a (+.p16 b c))           (+.p16 (*.p16 b a) (*.p16 c a))]
-  [distribute-lft-out     (+.p16 (*.p16 a b) (*.p16 a c))   (*.p16 a (+.p16 b c))]
-  [distribute-lft-out--   (-.p16 (*.p16 a b) (*.p16 a c))   (*.p16 a (-.p16 b c))]
-  [distribute-rgt-out     (+.p16 (*.p16 b a) (*.p16 c a))   (*.p16 a (+.p16 b c))]
-  [distribute-rgt-out--   (-.p16 (*.p16 b a) (*.p16 c a))   (*.p16 a (-.p16 b c))]
-  [distribute-lft1-in     (+.p16 (*.p16 b a) a)           (*.p16 (+.p16 b (binary64->posit16 1.0)) a)]
-  [distribute-rgt1-in     (+.p16 a (*.p16 c a))           (*.p16 (+.p16 c (binary64->posit16 1.0)) a)])
+  [distribute-lft-in.p16      (*.p16 a (+.p16 b c))           (+.p16 (*.p16 a b) (*.p16 a c))]
+  [distribute-rgt-in.p16      (*.p16 a (+.p16 b c))           (+.p16 (*.p16 b a) (*.p16 c a))]
+  [distribute-lft-out.p16     (+.p16 (*.p16 a b) (*.p16 a c))   (*.p16 a (+.p16 b c))]
+  [distribute-lft-out--.p16   (-.p16 (*.p16 a b) (*.p16 a c))   (*.p16 a (-.p16 b c))]
+  [distribute-rgt-out.p16     (+.p16 (*.p16 b a) (*.p16 c a))   (*.p16 a (+.p16 b c))]
+  [distribute-rgt-out--.p16   (-.p16 (*.p16 b a) (*.p16 c a))   (*.p16 a (-.p16 b c))]
+  [distribute-lft1-in.p16     (+.p16 (*.p16 b a) a)           (*.p16 (+.p16 b (binary64->posit16 1.0)) a)]
+  [distribute-rgt1-in.p16     (+.p16 a (*.p16 c a))           (*.p16 (+.p16 c (binary64->posit16 1.0)) a)])
 
 (define-ruleset difference-of-squares-canonicalize.p16 (polynomials simplify posit)
   #:type ([a posit16] [b posit16])
-  [difference-of-squares (-.p16 (*.p16 a a) (*.p16 b b))   (*.p16 (+.p16 a b) (-.p16 a b))]
-  [difference-of-sqr-1   (-.p16 (*.p16 a a) (binary64->posit16 1.0))
+  [difference-of-squares.p16 (-.p16 (*.p16 a a) (*.p16 b b))   (*.p16 (+.p16 a b) (-.p16 a b))]
+  [difference-of-sqr-1.p16   (-.p16 (*.p16 a a) (binary64->posit16 1.0))
                          (*.p16 (+.p16 a (binary64->posit16 1.0)) (-.p16 a (binary64->posit16 1.0)))]
-  [difference-of-sqr--1  (+.p16 (*.p16 a a) (binary64->posit16 -1.0))
+  [difference-of-sqr--1.p16  (+.p16 (*.p16 a a) (binary64->posit16 -1.0))
                          (*.p16 (+.p16 a (binary64->posit16 1.0)) (-.p16 a (binary64->posit16 1.0)))])
 
 (define-ruleset exact-posit16 (arithmetic simplify posit fp-safe-nan)

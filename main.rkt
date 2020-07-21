@@ -356,7 +356,7 @@
   [->tex (infix-joiner " \\ge ")]
   [nonffi (comparator posit32>=)])
 
-(define-operator (real->posit8 real) posit8
+(define-operator (binary64->posit8 binary64) posit8
   ; Override number of arguments
   [fl double->posit8] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/* ERROR: no posit support in C */")]
@@ -364,7 +364,7 @@
   [->tex (curry format "~a")]
   [nonffi double->posit8])
 
-(define-operator (real->posit16 real) posit16
+(define-operator (binary64->posit16 binary64) posit16
   ; Override number of arguments
   [fl double->posit16] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/* ERROR: no posit support in C */")]
@@ -372,7 +372,7 @@
   [->tex (curry format "~a")]
   [nonffi double->posit16])
 
-(define-operator (real->posit32 real) posit32
+(define-operator (binary64->posit32 binary64) posit32
   ; Override number of arguments
   [fl double->posit32] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/* ERROR: no posit support in C */")]
@@ -380,7 +380,7 @@
   [->tex (curry format "~a")]
   [nonffi double->posit32])
 
-(define-operator (posit8->real posit8) real
+(define-operator (posit8->binary64 posit8) binary64
   ; Override number of arguments
   [fl posit8->double] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/* ERROR: no posit support in C */")]
@@ -388,7 +388,7 @@
   [->tex (curry format "~a")]
   [nonffi double->posit8])
 
-(define-operator (posit16->real posit16) real
+(define-operator (posit16->binary64 posit16) binary64
   ; Override number of arguments
   [fl posit16->double] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/* ERROR: no posit support in C */")]
@@ -396,7 +396,7 @@
   [->tex (curry format "~a")]
   [nonffi double->posit16])
 
-(define-operator (posit32->real posit32) real
+(define-operator (posit32->binary64 posit32) binary64
   ; Override number of arguments
   [fl posit32->double] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/* ERROR: no posit support in C */")]
@@ -404,7 +404,7 @@
   [->tex (curry format "~a")]
   [nonffi double->posit32])
 
-(define-operator (real->quire8 real) quire8
+(define-operator (binary64->quire8 binary64) quire8
   ; Override number of arguments
   [fl double->quire8] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/*Error: no posit support in C */")]
@@ -412,7 +412,7 @@
   [->tex (curry format "~a")]
   [nonffi double->quire8])
 
-(define-operator (real->quire16 real) quire16
+(define-operator (binary64->quire16 binary64) quire16
   ; Override number of arguments
   [fl double->quire16] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/*Error: no posit support in C */")]
@@ -420,7 +420,7 @@
   [->tex (curry format "~a")]
   [nonffi double->quire16])
 
-(define-operator (real->quire32 real) quire32
+(define-operator (binary64->quire32 binary64) quire32
   ; Override number of arguments
   [fl double->quire32] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/*Error: no posit support in C */")]
@@ -428,7 +428,7 @@
   [->tex (curry format "~a")]
   [nonffi double->quire32])
 
-(define-operator (quire8->real quire8) real
+(define-operator (quire8->binary64 quire8) binary64
   ; Override number of arguments
   [fl quire8->double] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/*Error: no posit support in C */")]
@@ -436,7 +436,7 @@
   [->tex (curry format "~a")]
   [nonffi double->quire8])
 
-(define-operator (quire16->real quire16) real
+(define-operator (quire16->binary64 quire16) binary64
   ; Override number of arguments
   [fl quire16->double] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/*Error: no posit support in C */")]
@@ -444,7 +444,7 @@
   [->tex (curry format "~a")]
   [nonffi double->quire16])
 
-(define-operator (quire16->real quire16) real
+(define-operator (quire16->binary64 quire16) binary64
   ; Override number of arguments
   [fl quire16->double] [bf identity] [ival #f] [cost 0]
   [->c/double (const "/*Error: no posit support in C */")]
@@ -560,30 +560,30 @@
 
 ; Posit conversions
 (define-ruleset insert-p16 (arithmetic posit)
-  #:type ([a real])
-  [insert-posit16 a (posit16->real (real->posit16 a))])
+  #:type ([a binary64])
+  [insert-posit16 a (posit16->binary64 (binary64->posit16 a))])
 
 (define-ruleset remove-p16 (arithmetic simplify posit)
-  #:type ([a real])
-  [remove-posit16 (posit16->real (real->posit16 a)) a])
+  #:type ([a binary64])
+  [remove-posit16 (posit16->binary64 (binary64->posit16 a)) a])
 
 (define-ruleset id-p16 (arithmetic simplify posit)
   #:type ([a posit16])
-  [+p16-lft-identity-reduce    (+.p16 (real->posit16 0.0) a)               a]
-  [+p16-rgt-identity-reduce    (+.p16 a (real->posit16 0.0))               a]
-  [-p16-rgt-identity-reduce    (-.p16 a (real->posit16 0.0))               a]
-  [*p16-lft-identity-reduce    (*.p16 (real->posit16 1.0) a)               a]
-  [*p16-rgt-identity-reduce    (*.p16 a (real->posit16 1.0))               a]
-  [/p16-rgt-identity-reduce    (/.p16 a (real->posit16 1.0))               a])
+  [+p16-lft-identity-reduce    (+.p16 (binary64->posit16 0.0) a)               a]
+  [+p16-rgt-identity-reduce    (+.p16 a (binary64->posit16 0.0))               a]
+  [-p16-rgt-identity-reduce    (-.p16 a (binary64->posit16 0.0))               a]
+  [*p16-lft-identity-reduce    (*.p16 (binary64->posit16 1.0) a)               a]
+  [*p16-rgt-identity-reduce    (*.p16 a (binary64->posit16 1.0))               a]
+  [/p16-rgt-identity-reduce    (/.p16 a (binary64->posit16 1.0))               a])
 
 (define-ruleset unid-p16 (arithmetic posit)
   #:type ([a posit16])
-  [+p16-lft-identity-expand    a               (+.p16 (real->posit16 0.0) a)]
-  [+p16-rgt-identity-expand    a               (+.p16 a (real->posit16 0.0))]
-  [-p16-rgt-identity-expand    a               (-.p16 a (real->posit16 0.0))]
-  [*p16-lft-identity-expand    a               (*.p16 (real->posit16 1.0) a)]
-  [*p16-rgt-identity-expand    a               (*.p16 a (real->posit16 1.0))]
-  [/p16-rgt-identity-expand    a               (/.p16 a (real->posit16 1.0))])
+  [+p16-lft-identity-expand    a               (+.p16 (binary64->posit16 0.0) a)]
+  [+p16-rgt-identity-expand    a               (+.p16 a (binary64->posit16 0.0))]
+  [-p16-rgt-identity-expand    a               (-.p16 a (binary64->posit16 0.0))]
+  [*p16-lft-identity-expand    a               (*.p16 (binary64->posit16 1.0) a)]
+  [*p16-rgt-identity-expand    a               (*.p16 a (binary64->posit16 1.0))]
+  [/p16-rgt-identity-expand    a               (/.p16 a (binary64->posit16 1.0))])
 
 ;; TODO: Multiply add to mulAdd
 
@@ -593,9 +593,9 @@
   #:type ([a posit16] [b posit16] [c posit16] [q quire16])
   [introduce-quire      a               (quire16->posit16 (posit16->quire16 a))]
   [insert-quire-add     (+.p16 (quire16->posit16 q) a)
-                        (quire16->posit16 (quire16-mul-add q a (real->posit16 1.0)))]
+                        (quire16->posit16 (quire16-mul-add q a (binary64->posit16 1.0)))]
   [insert-quire-sub     (-.p16 (quire16->posit16 q) a)
-                        (quire16->posit16 (quire16-mul-sub q a (real->posit16 1.0)))]
+                        (quire16->posit16 (quire16-mul-sub q a (binary64->posit16 1.0)))]
   [insert-quire-fdp-add (+.p16 (quire16->posit16 q) (*.p16 a b))
                         (quire16->posit16 (quire16-mul-add q a b))]
   [insert-quire-fdp-sub (-.p16 (quire16->posit16 q) (*.p16 a b))
@@ -603,17 +603,17 @@
 
 (define-ruleset p16-test-rules (arithmetic posit)
   #:type ([a posit16] [b posit16] [c posit16] [d posit16])
-  [p16-flip--            (-.p16 a b)                            (/.p16 (-.p16 (*.p16 a a) (*.p16 b b)) (+.p16 a b))]
-  [p16-*-un-lft-identity a                                      (*.p16 (real->posit16 1.0) a)]
-  [p16-distribute-lft-out     (+.p16 (*.p16 a b) (*.p16 a c))   (*.p16 a (+.p16 b c))]
-  [p16-times-frac  (/.p16 (*.p16 a b) (*.p16 c d))              (*.p16 (/.p16 a c) (/.p16 b d))]
-  [sqrt-sqrd.p16   (*.p16 (sqrt.p16 a) (sqrt.p16 a))             a]
-  [remove-negate.p16 (+.p16 a (-.p16 (real->posit16 1.0) a))    (real->posit16 1.0)])
+  [p16-flip--            (-.p16 a b)                              (/.p16 (-.p16 (*.p16 a a) (*.p16 b b)) (+.p16 a b))]
+  [p16-*-un-lft-identity a                                        (*.p16 (binary64->posit16 1.0) a)]
+  [p16-distribute-lft-out     (+.p16 (*.p16 a b) (*.p16 a c))     (*.p16 a (+.p16 b c))]
+  [p16-times-frac  (/.p16 (*.p16 a b) (*.p16 c d))                (*.p16 (/.p16 a c) (/.p16 b d))]
+  [sqrt-sqrd.p16   (*.p16 (sqrt.p16 a) (sqrt.p16 a))              a]
+  [remove-negate.p16 (+.p16 a (-.p16 (binary64->posit16 1.0) a))  (binary64->posit16 1.0)])
 
 (define-ruleset associativity.p16 (arithmetic simplify posit)
   #:type ([a posit16] [b posit16] [c posit16])
   [associate-+r+  (+.p16 a (+.p16 b c))         (+.p16 (+.p16 a b) c)]
-  [associate-+l+  (+.p16 (+.p16 a b) c)         (+.p16 a (+.p16 b c))]
+  [associate-+l+  (+.p16 (+.p16 a b) c)         (+.p16 a (+.p16 b  c))]
   [associate-+r-  (+.p16 a (-.p16 b c))         (-.p16 (+.p16 a b) c)]
   [associate-+l-  (+.p16 (-.p16 a b) c)         (-.p16 a (-.p16 b c))]
   [associate--r+  (-.p16 a (+.p16 b c))         (-.p16 (-.p16 a b) c)]
@@ -639,27 +639,27 @@
   [distribute-lft-out--   (-.p16 (*.p16 a b) (*.p16 a c))   (*.p16 a (-.p16 b c))]
   [distribute-rgt-out     (+.p16 (*.p16 b a) (*.p16 c a))   (*.p16 a (+.p16 b c))]
   [distribute-rgt-out--   (-.p16 (*.p16 b a) (*.p16 c a))   (*.p16 a (-.p16 b c))]
-  [distribute-lft1-in     (+.p16 (*.p16 b a) a)           (*.p16 (+.p16 b (real->posit16 1.0)) a)]
-  [distribute-rgt1-in     (+.p16 a (*.p16 c a))           (*.p16 (+.p16 c (real->posit16 1.0)) a)])
+  [distribute-lft1-in     (+.p16 (*.p16 b a) a)           (*.p16 (+.p16 b (binary64->posit16 1.0)) a)]
+  [distribute-rgt1-in     (+.p16 a (*.p16 c a))           (*.p16 (+.p16 c (binary64->posit16 1.0)) a)])
 
 (define-ruleset difference-of-squares-canonicalize.p16 (polynomials simplify posit)
   #:type ([a posit16] [b posit16])
   [difference-of-squares (-.p16 (*.p16 a a) (*.p16 b b))   (*.p16 (+.p16 a b) (-.p16 a b))]
-  [difference-of-sqr-1   (-.p16 (*.p16 a a) (real->posit16 1.0))
-                         (*.p16 (+.p16 a (real->posit16 1.0)) (-.p16 a (real->posit16 1.0)))]
-  [difference-of-sqr--1  (+.p16 (*.p16 a a) (real->posit16 -1.0))
-                         (*.p16 (+.p16 a (real->posit16 1.0)) (-.p16 a (real->posit16 1.0)))])
+  [difference-of-sqr-1   (-.p16 (*.p16 a a) (binary64->posit16 1.0))
+                         (*.p16 (+.p16 a (binary64->posit16 1.0)) (-.p16 a (binary64->posit16 1.0)))]
+  [difference-of-sqr--1  (+.p16 (*.p16 a a) (binary64->posit16 -1.0))
+                         (*.p16 (+.p16 a (binary64->posit16 1.0)) (-.p16 a (binary64->posit16 1.0)))])
 
 (define-ruleset exact-posit16 (arithmetic simplify posit fp-safe-nan)
   #:type ([a posit16])
-  [+-inverses.p16    (-.p16 a a)                                 (real->posit16 0.0)]
-  [*-inverses.p16    (/.p16 a a)                                 (real->posit16 1.0)]
-  [div0.p16          (/.p16 (real->posit16 0.0) a)               (real->posit16 0.0)]
-  [mul0.p16          (*.p16 (real->posit16 0.0) a)               (real->posit16 0.0)]
-  [mul0.p16          (*.p16 a (real->posit16 0.0))               (real->posit16 0.0)])
+  [+-inverses.p16    (-.p16 a a)                                (binary64->posit16 0.0)]
+  [*-inverses.p16    (/.p16 a a)                                (binary64->posit16 1.0)]
+  [div0.p16          (/.p16 (binary64->posit16 0.0) a)          (binary64->posit16 0.0)]
+  [mul0.p16          (*.p16 (binary64->posit16 0.0) a)          (binary64->posit16 0.0)]
+  [mul0.p16          (*.p16 a (binary64->posit16 0.0))          (binary64->posit16 0.0)])
 
 (define-ruleset id-reduce-posit16 (arithmetic simplify posit)
   #:type ([a posit16])
-  [remove-double-div.p16 (/.p16 (real->posit16 1.0) (/.p16 (real->posit16 1.0) a))         a]
-  [rgt-mult-inverse.p16  (*.p16 a (/.p16 (real->posit16 1.0) a))         (real->posit16 1.0)]
-  [lft-mult-inverse.p16  (*.p16 (/.p16 (real->posit16 1.0) a) a)         (real->posit16 1.0)])
+  [remove-double-div.p16 (/.p16 (binary64->posit16 1.0) (/.p16 (binary64->posit16 1.0) a))   a]
+  [rgt-mult-inverse.p16  (*.p16 a (/.p16 (binary64->posit16 1.0) a))         (binary64->posit16 1.0)]
+  [lft-mult-inverse.p16  (*.p16 (/.p16 (binary64->posit16 1.0) a) a)         (binary64->posit16 1.0)])

@@ -1,12 +1,14 @@
 ; -*- mode: scheme -*-
 
-(FPCore (a b c)
- :pre (and (< 0 a) (< 0 b) (< 0 c))
- :name "Area of a triangle"
- :precision posit16
- :herbie-expected 16
- (let ([s (/ (+ (+ a b) c) 2)])
-   (sqrt (* s (- s a) (- s b) (- s c)))))
+; Herbie cannot properly sample points for this FPCore
+;
+; (FPCore (a b c)
+;  :pre (and (< 0 a) (< 0 b) (< 0 c))
+;  :name "Area of a triangle"
+;  :precision posit16
+;  :herbie-expected 16
+;  (let ([s (/ (+ (+ a b) c) 2)])
+;    (sqrt (* s (- s a) (- s b) (- s c)))))
 
 (FPCore (a b c)
  :name "quadp (p42, positive)"

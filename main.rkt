@@ -9,79 +9,66 @@
 (define ((infix-joiner x) . args)
   (string-join args x))
 
+(define (shift bits fn)
+  (define shift-val (expt 2 bits))
+  (λ (x) (fn (- x shift-val))))
+
+(define (unshift bits fn)
+  (define shift-val (expt 2 bits))
+  (λ (x) (+ (fn x) shift-val)))
+
 (eprintf "Loading posits support...\n")
-
-;; Defining the types
-
-(define-type posit8 (posit8? bigfloat?)
-  (compose bf posit8->double)
-  (compose double->posit8 bigfloat->flonum))
-(define-type posit16 (posit16? bigfloat?)
-  (compose bf posit16->double)
-  (compose double->posit16 bigfloat->flonum))
-(define-type posit32 (posit32? bigfloat?)
-  (compose bf posit32->double)
-  (compose double->posit32 bigfloat->flonum))
-(define-type quire8 (quire8? bigfloat?)
-  (compose double->quire8 bigfloat->flonum)
-  (compose bf quire8->double))
-(define-type quire16 (quire16? bigfloat?)
-  (compose double->quire16 bigfloat->flonum)
-  (compose bf quire16->double))
-(define-type quire32 (quire32? bigfloat?)
-  (compose double->quire32 bigfloat->flonum)
-  (compose bf quire32->double))
 
 ;; Defining the representations
 
-(define-representation (posit8 posit8)
+(define-representation (posit8 real posit8?)
   (compose double->posit8 bigfloat->flonum)
   (compose bf posit8->double)
-  ordinal->posit8
-  posit8->ordinal
+  (shift 7 ordinal->posit8)
+  (unshift 7 posit8->ordinal)
   8
-  (list posit8-nar))
+  (curry posit8= (posit8-nar)))
 
-(define-representation (posit16 posit16)
+(define-representation (posit16 real posit16?)
   (compose double->posit16 bigfloat->flonum)
   (compose bf posit16->double)
-  ordinal->posit16
-  posit16->ordinal
+  (shift 15 ordinal->posit16)
+  (unshift 15 posit16->ordinal)
   16
-  (list posit16-nar))
+  (curry posit16= (posit16-nar)))
 
-(define-representation (posit32 posit32)
+(define-representation (posit32 real posit32?)
   (compose double->posit32 bigfloat->flonum)
   (compose bf posit32->double)
-  ordinal->posit32
-  posit32->ordinal
+  (shift 31 ordinal->posit32)
+  (unshift 31 posit32->ordinal)
   32
-  (list posit32-nar))
+  (curry posit32= (posit32-nar)))
 
 ;;TODO correct functions for quire (incorrect now for testing)
-(define-representation (quire8 quire8)
+(define-representation (quire8 real quire8?)
   (compose double->quire8 bigfloat->flonum)
   (compose bf quire8->double)
   (compose double->quire8 ordinal->flonum)
   (compose flonum->ordinal quire8->double)
   64
-  null)
+  (const #f))
 
-(define-representation (quire16 quire16)
+(define-representation (quire16 real quire16?)
   (compose double->quire16 bigfloat->flonum)
   (compose bf quire16->double)
   (compose double->quire16 ordinal->flonum)
   (compose flonum->ordinal quire16->double)
   64
-  null)
+  (const #f))
 
-(define-representation (quire32 quire32)
+(define-representation (quire32 real quire32?)
   (compose double->quire32 bigfloat->flonum)
   (compose bf quire32->double)
   (compose double->quire32 ordinal->flonum)
   (compose flonum->ordinal quire32->double)
   64
-  null)
+  (const #f))
 
 ;; Defining the operators
 

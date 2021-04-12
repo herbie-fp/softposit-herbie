@@ -20,7 +20,7 @@ jobs:
           path: herbie
           ref: ${{ github.event.client_payload.branch }}
       - name: "Install Herbie"
-        run: raco pkg install --no-cache --auto --name herbie herbie/src/
+        run: make install -C herbie/
       - name: "Install SoftPosit support"
         run: raco pkg install --no-cache --auto --name softposit-herbie plugin/
       - run: racket herbie/infra/travis.rkt --precision posit16 --seed 0 plugin/bench/posits.fpcore

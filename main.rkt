@@ -78,19 +78,20 @@
 
 (define-operator-impl (+ +.p8 posit8 posit8) posit8
   [fl posit8-add])
+
 (define-operator-impl (+ +.p16 posit16 posit16) posit16
   [fl posit16-add])
 
 (define-operator-impl (+ +.p32 posit32 posit32) posit32
   [fl posit32-add])
 
-(define-operator-impl (- neg.p8 posit8) posit8
+(define-operator-impl (neg neg.p8 posit8) posit8
   [fl posit8-neg])
 
-(define-operator-impl (- neg.p16 posit16) posit16
+(define-operator-impl (neg neg.p16 posit16) posit16
   [fl posit16-neg])
 
-(define-operator-impl (- neg.p32 posit32) posit32
+(define-operator-impl (neg neg.p32 posit32) posit32
   [fl posit32-neg])
 
 (define-operator-impl (- -.p8 posit8 posit8) posit8
@@ -143,15 +144,15 @@
 
 (define-operator-impl (!= !=.p8 posit8 posit8) bool
   [itype 'posit8] [otype 'bool] ; Override number of arguments
-  [fl (inv-comparator posit8=)])
+  [fl (negate (comparator posit8=))])
 
 (define-operator-impl (!= !=.p16 posit16 posit16) bool
   [itype 'posit16] [otype 'bool] ; Override number of arguments
-  [fl (inv-comparator posit16=)])
+  [fl (negate (comparator posit16=))])
 
 (define-operator-impl (!= !=.p32 posit32 posit32) bool
   [itype 'posit32] [otype 'bool] ; Override number of arguments
-  [fl (inv-comparator posit32=)])
+  [fl (negate (inv-comparator posit32=))])
 
 (define-operator-impl (< <.p8 posit8 posit8) bool
   [itype 'posit8] [otype 'bool] ; Override number of arguments
@@ -201,84 +202,44 @@
   [itype 'posit32] [otype 'bool] ; Override number of arguments
   [fl (comparator posit32>=)])
 
-;; Posit/float conversions
-
-(define-operator binary64->posit8
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator binary64->posit16
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator binary64->posit32
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator posit8->binary64
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator posit16->binary64
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator posit32->binary64
-  [bf identity] [ival identity] [nonffi identity])
-
 ;; Posit/float implementations
 
-(define-operator-impl (binary64->posit8 binary64->posit8 binary64) posit8
+(define-operator-impl (cast binary64->posit8 binary64) posit8
   [fl double->posit8])
 
-(define-operator-impl (binary64->posit16 binary64->posit16 binary64) posit16
+(define-operator-impl (cast binary64->posit16 binary64) posit16
   [fl double->posit16])
 
-(define-operator-impl (binary64->posit32 binary64->posit32 binary64) posit32
+(define-operator-impl (cast binary64->posit32 binary64) posit32
   [fl double->posit32])
 
-(define-operator-impl (posit8->binary64 posit8->binary64 posit8) binary64
+(define-operator-impl (cast posit8->binary64 posit8) binary64
   [fl posit8->double])
 
-(define-operator-impl (posit16->binary64 posit16->binary64 posit16) binary64
+(define-operator-impl (cast posit16->binary64 posit16) binary64
   [fl posit16->double])
 
-(define-operator-impl (posit32->binary64 posit32->binary64 posit32) binary64
+(define-operator-impl (cast posit32->binary64 posit32) binary64
   [fl posit32->double])
-
-;; Quire/float conversions
-
-(define-operator binary64->quire8
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator binary64->quire16
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator binary64->quire32
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator quire8->binary64
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator quire16->binary64
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator quire32->binary64
-  [bf identity] [ival identity] [nonffi identity])
 
 ;; Quire/float implementations 
 
-(define-operator-impl (binary64->quire8 binary64->quire8 binary64) quire8
+(define-operator-impl (cast binary64->quire8 binary64) quire8
   [fl double->quire8])
 
-(define-operator-impl (binary64->quire16 binary64->quire16 binary64) quire16
+(define-operator-impl (cast binary64->quire16 binary64) quire16
   [fl double->quire16])
 
-(define-operator-impl (binary64->quire32 binary64->quire32 binary64) quire32
+(define-operator-impl (cast binary64->quire32 binary64) quire32
   [fl double->quire32])
 
-(define-operator-impl (quire8->binary64 quire8->binary64 quire8) binary64
+(define-operator-impl (cast quire8->binary64 quire8) binary64
   [fl quire8->double])
 
-(define-operator-impl (quire16->binary64 quire16->binary64 quire16) binary64
+(define-operator-impl (cast quire16->binary64 quire16) binary64
   [fl quire16->double])
 
-(define-operator-impl (quire16->binary64 quire16->binary64 quire16) binary64
+(define-operator-impl (cast quire16->binary64 quire16) binary64
   [fl quire16->double])
 
 (define (bffdp x y z) (bf+ x (bf* y z)))
@@ -286,82 +247,50 @@
 
 ;; Quire/posit fused ops
 
-(define-operator quire8-mul-add
-  [bf bffdp] [ival (λ (x y z) (ival-add (ival-mult x y) z))] [nonffi (λ (x y z) (+ (* x y) z))])
+(define-operator (fdp real real real) real
+  [bf bffdp] [ival (λ (x y z) (ival-add x (ival-mult y z)))] [nonffi (λ (x y z) (+ (* x y) z))])
 
-(define-operator quire16-mul-add
-  [bf bffdp] [ival (λ (x y z) (ival-add (ival-mult x y) z))] [nonffi (λ (x y z) (+ (* x y) z))])
-
-(define-operator quire32-mul-add
-  [bf bffdp] [ival (λ (x y z) (ival-add (ival-mult x y) z))] [nonffi (λ (x y z) (+ (* x y) z))])
-
-(define-operator quire8-mul-sub
-  [bf bffdm] [ival (λ (x y z) (ival-sub (ival-mult x y) z))] [nonffi (λ (x y z) (- (* x y) z))])
-
-(define-operator quire16-mul-sub
-  [bf bffdm] [ival (λ (x y z) (ival-sub (ival-mult x y) z))] [nonffi (λ (x y z) (- (* x y) z))])
-
-(define-operator quire32-mul-sub
-  [bf bffdm] [ival (λ (x y z) (ival-sub (ival-mult x y) z))] [nonffi (λ (x y z) (- (* x y) z))])
+(define-operator (fdm real real real) real
+  [bf bffdm] [ival (λ (x y z) (ival-sub x (ival-mult y z)))] [nonffi (λ (x y z) (- (* x y) z))])
 
 ;; Quire/posit fused impl
 
-(define-operator-impl (quire8-mul-add quire8-mul-add quire8 posit8 posit8) quire8
+(define-operator-impl (fdp quire8-mul-add quire8 posit8 posit8) quire8
   [fl quire8-fdp-add])
 
-(define-operator-impl (quire16-mul-add quire16-mul-add quire16 posit16 posit16) quire16
+(define-operator-impl (fdp quire16-mul-add quire16 posit16 posit16) quire16
   [fl quire16-fdp-add])
 
-(define-operator-impl (quire32-mul-add quire32-mul-add quire32 posit32 posit32) quire32
+(define-operator-impl (fdp quire32-mul-add quire32 posit32 posit32) quire32
   [fl quire32-fdp-add])
 
-(define-operator-impl (quire8-mul-sub quire8-mul-sub quire8 posit8 posit8) quire8
-  [fl quire8-fdp-sub])
+(define-operator-impl (fdm quire8-mul-sub quire8 posit8 posit8) quire8
+  [fl quire8-fdp-sub] [inherit 'mul-sub])
 
-(define-operator-impl (quire16-mul-sub quire16-mul-sub quire16 posit16 posit16) quire16
-  [fl quire16-fdp-sub])
+(define-operator-impl (fdm quire16-mul-sub quire16 posit16 posit16) quire16
+  [fl quire16-fdp-sub] [inherit 'mul-sub])
 
-(define-operator-impl (quire32-mul-sub quire32-mul-sub quire32 posit32 posit32) quire32
+(define-operator-impl (fdm quire32-mul-sub quire32 posit32 posit32) quire32
   [fl quire32-fdp-sub])
-
-;; Quire/posit conversions
-
-(define-operator quire8->posit8
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator quire16->posit16
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator quire32->posit32
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator posit8->quire8
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator posit16->quire16
-  [bf identity] [ival identity] [nonffi identity])
-
-(define-operator posit32->quire32
-  [bf identity] [ival identity] [nonffi identity])
 
 ;; Quire/posit impl
 
-(define-operator-impl (quire8->posit8 quire8->posit8 quire8) posit8
+(define-operator-impl (cast quire8->posit8 quire8) posit8
   [fl quire8->posit8])
 
-(define-operator-impl (quire16->posit16 quire16->posit16 quire16) posit16
+(define-operator-impl (cast quire16->posit16 quire16) posit16
   [fl quire16->posit16])
 
-(define-operator-impl (quire32->posit32 quire32->posit32 quire32) posit32
+(define-operator-impl (cast quire32->posit32 quire32) posit32
   [fl quire32->posit32])
 
-(define-operator-impl (posit8->quire8 posit8->quire8 posit8) quire8
+(define-operator-impl (cast posit8->quire8 posit8) quire8
   [fl posit8->quire8])
 
-(define-operator-impl (posit16->quire16 posit16->quire16 posit16) quire16
+(define-operator-impl (cast posit16->quire16 posit16) quire16
   [fl posit16->quire16])
 
-(define-operator-impl (posit32->quire32 posit32->quire32 posit32) quire32
+(define-operator-impl (cast posit32->quire32 posit32) quire32
   [fl posit32->quire32])
 
 ;; Defining the rules

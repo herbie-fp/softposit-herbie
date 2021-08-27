@@ -2,17 +2,6 @@
 
 (require math/flonum math/bigfloat softposit-rkt herbie/plugin rival)
 
-(define ((comparator test) . args)
-  (for/and ([left args] [right (cdr args)])
-    (test left right)))
-
-(define ((inv-comparator test) . args)
-  (for/or ([left args] [right (cdr args)])
-    (not (test left right))))
-
-(define ((infix-joiner x) . args)
-  (string-join args x))
-
 (define (shift bits fn)
   (define shift-val (expt 2 bits))
   (λ (x) (fn (- x shift-val))))
@@ -131,76 +120,58 @@
   [fl posit32-sqrt])
 
 (define-operator-impl (== ==.p8 posit8 posit8) bool
-  [itype 'posit8] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit8=)])
+  [fl posit8=])
 
 (define-operator-impl (== ==.p16 posit16 posit16) bool
-  [itype 'posit16] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit16=)])
+  [fl posit16=])
 
 (define-operator-impl (== ==.p32 posit32 posit32) bool
-  [itype 'posit32] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit32=)])
+  [fl posit32=])
 
 (define-operator-impl (!= !=.p8 posit8 posit8) bool
-  [itype 'posit8] [otype 'bool] ; Override number of arguments
-  [fl (negate (comparator posit8=))])
+  [fl (negate posit8=)])
 
 (define-operator-impl (!= !=.p16 posit16 posit16) bool
-  [itype 'posit16] [otype 'bool] ; Override number of arguments
-  [fl (negate (comparator posit16=))])
+  [fl (negate posit16=)])
 
 (define-operator-impl (!= !=.p32 posit32 posit32) bool
-  [itype 'posit32] [otype 'bool] ; Override number of arguments
-  [fl (negate (inv-comparator posit32=))])
+  [fl (negate posit32=)])
 
 (define-operator-impl (< <.p8 posit8 posit8) bool
-  [itype 'posit8] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit8<)])
+  [fl posit8<])
 
 (define-operator-impl (< <.p16 posit16 posit16) bool
-  [itype 'posit16] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit16<)])
+  [fl posit16<])
 
 (define-operator-impl (< <.p32 posit32 posit32) bool
-  [itype 'posit32] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit32<)])
+  [fl posit32<])
 
 (define-operator-impl (> >.p8 posit8 posit8) bool
-  [itype 'posit8] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit8>)])
+  [fl posit8>])
 
 (define-operator-impl (> >.p16 posit16 posit16) bool
-  [itype 'posit16] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit16>)])
+  [fl posit16>])
 
 (define-operator-impl (> >.p32 posit32 posit32) bool
-  [itype 'posit32] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit32>)])
+  [fl posit32>])
 
 (define-operator-impl (<= <=.p8 posit8 posit8) bool
-  [itype 'posit8] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit8<=)])
+  [fl posit8<=])
 
 (define-operator-impl (<= <=.p16 posit16 posit16) bool
-  [itype 'posit16] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit16<=)])
+  [fl posit16<=])
 
 (define-operator-impl (<= <=.p32 posit32) bool
-  [itype 'posit32] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit32<=)])
+  [fl posit32<=])
 
 (define-operator-impl (>= >=.p8 posit8 posit8) bool
-  [itype 'posit8] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit8>=)])
+  [fl posit8>=])
 
 (define-operator-impl (>= >=.p16 posit16 posit16) bool
-  [itype 'posit16] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit16>=)])
+  [fl posit16>=])
 
 (define-operator-impl (>= >=.p32 posit32 posit32) bool
-  [itype 'posit32] [otype 'bool] ; Override number of arguments
-  [fl (comparator posit32>=)])
+  [fl posit32>=])
 
 ;; Posit/float implementations
 

@@ -16,7 +16,25 @@
 (define posit16-max (ordinal->posit16 (- (expt 2 (- 16 1)) 1)))
 (define posit32-max (ordinal->posit32 (- (expt 2 (- 32 1)) 1)))
 
-;; TODO: not actually correct, it's bigger than this but hard to compute
+;; Max quire is difficult to compute:
+;;
+;; A quire is a 2s-complement signed fixed-point number with
+;;  - `000...000` representing 0,
+;;  - `100...000` representing NAR.
+;; Unlike traditional fixed-point numbers, quires are actually symmetric.
+;; For an `n`-bit posit, the associated quire has bitwidth `16 * n`
+;; with a scale of `2^(16 - 8*n)`.
+;;
+;;   posit   quire size         max value               nearest double w/ epsilon
+;;  -------|------------|----------------------|------------------------------------------|
+;;   8       128         (2^(127) - 1) * 2^-48   2^79 - 2^-48   (6.044629098073146e+23)
+;;   16      256         (2^(255) - 1) * 2^-112  2^143 - 2^-112  (1.1150372599265312e+43)
+;;   32      512         (2^(511) - 1) * 2^-240  2^270 - 2^-240  (3.794275180128377e+81)
+;;
+;; Unfortunately, we don't have a good way to convert doubles to quire.
+;; The libsoftposit library only has double to posit; the Racket shim
+;; incorrectly composes double-posit, posit-quire conversions.
+;;
 (define quire8-max (quire8-fdp-add (double->quire8 0.0) posit8-max posit8-max))
 (define quire8-nmax (quire8-fdp-sub (double->quire8 0.0) posit8-max posit8-max))
 (define quire16-max (quire16-fdp-add (double->quire16 0.0) posit16-max posit16-max))
@@ -207,7 +225,7 @@
 (define-operator-impl (<= <=.p16 posit16 posit16) bool
   [fl posit16<=])
 
-(define-operator-impl (<= <=.p32 posit32) bool
+(define-operator-impl (<= <=.p32 posit32 posit32) bool
   [fl posit32<=])
 
 (define-operator-impl (>= >=.p8 posit8 posit8) bool
@@ -256,19 +274,16 @@
 (define-operator-impl (cast quire16->binary64 quire16) binary64
   [fl quire16->double])
 
-(define-operator-impl (cast quire16->binary64 quire16) binary64
-  [fl quire16->double])
-
-(define (bffdp x y z) (bf+ x (bf* y z)))
-(define (bffdm x y z) (bf- x (bf* y z)))
+(define-operator-impl (cast quire32->binary64 quire32) binary64
+  [fl quire32->double])
 
 ;; Quire/posit fused ops
 
 (define-operator (fdp real real real) real
-  [bf bffdp] [ival (λ (x y z) (ival-add x (ival-mult y z)))] [nonffi (λ (x y z) (+ (* x y) z))])
+  [ival (λ (x y z) (ival-add x (ival-mult y z)))])
 
 (define-operator (fdm real real real) real
-  [bf bffdm] [ival (λ (x y z) (ival-sub x (ival-mult y z)))] [nonffi (λ (x y z) (- (* x y) z))])
+  [ival (λ (x y z) (ival-sub x (ival-mult y z)))])
 
 ;; Quire/posit fused impl
 

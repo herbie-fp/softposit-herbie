@@ -311,37 +311,37 @@
 
 ;; Posit/float implementations
 
-(define-operator-impl (binary64->posit8 [x: binary64]) posit8
+(define-operator-impl (binary64->posit8 [x : binary64]) posit8
   #:spec x
   #:fpcore (! :precision posit8 (cast x))
   #:fl double->posit8
   #:op cast)
 
-(define-operator-impl (binary64->posit16 [x: binary64]) posit16
+(define-operator-impl (binary64->posit16 [x : binary64]) posit16
   #:spec x
   #:fpcore (! :precision posit16 (cast x))
   #:fl double->posit16
   #:op cast)
 
-(define-operator-impl (binary64->posit32 [x: binary64]) posit32
+(define-operator-impl (binary64->posit32 [x : binary64]) posit32
   #:spec x
   #:fpcore (! :precision posit32 (cast x))
   #:fl double->posit32
   #:op cast)
 
-(define-operator-impl (posit8->binary64 [x: posit8]) binary64
+(define-operator-impl (posit8->binary64 [x : posit8]) binary64
   #:spec x
   #:fpcore (! :precision binary64 (cast x))
   #:fl posit8->double
   #:op cast)
 
-(define-operator-impl (posit16->binary64 [x: posit16]) binary64
+(define-operator-impl (posit16->binary64 [x : posit16]) binary64
   #:spec x
   #:fpcore (! :precision binary64 (cast x))
   #:fl posit16->double
   #:op cast)
 
-(define-operator-impl (posit32->binary64 [x: posit32]) binary64
+(define-operator-impl (posit32->binary64 [x : posit32]) binary64
   #:spec x
   #:fpcore (! :precision binary64 (cast x))
   #:fl posit32->double
@@ -349,37 +349,37 @@
 
 ;; Quire/float implementations 
 
-(define-operator-impl (binary64->quire8 [x: binary64]) quire8
+(define-operator-impl (binary64->quire8 [x : binary64]) quire8
   #:spec x
   #:fpcore (! :precision quire8 (cast x))
   #:fl double->quire8
   #:op cast)
 
-(define-operator-impl (binary64->quire16 [x: binary64]) quire16
+(define-operator-impl (binary64->quire16 [x : binary64]) quire16
   #:spec x
   #:fpcore (! :precision quire16 (cast x))
   #:fl double->quire16
   #:op cast)
 
-(define-operator-impl (binary64->quire32 [x: binary64]) quire32
+(define-operator-impl (binary64->quire32 [x : binary64]) quire32
   #:spec x
   #:fpcore (! :precision quire32 (cast x))
   #:fl double->quire32
   #:op cast)
 
-(define-operator-impl (quire8->binary64 [x: quire8]) binary64
+(define-operator-impl (quire8->binary64 [x : quire8]) binary64
   #:spec x
   #:fpcore (! :precision binary64 (cast x))
   #:fl quire8->double
   #:op cast)
 
-(define-operator-impl (quire16->binary64 [x: quire16]) binary64
+(define-operator-impl (quire16->binary64 [x : quire16]) binary64
   #:spec x
   #:fpcore (! :precision binary64 (cast x))
   #:fl quire16->double
   #:op cast)
 
-(define-operator-impl (quire32->binary64 [x: quire32]) binary64
+(define-operator-impl (quire32->binary64 [x : quire32]) binary64
   #:spec x
   #:fpcore (! :precision binary64 (cast x))
   #:fl quire32->double

@@ -129,153 +129,261 @@
 
 ;; Defining the operators
 
-(define-operator-impl (+ +.p8 posit8 posit8) posit8
-  [fl posit8-add])
+(define-operator-impl (+.p8 [x : posit8] [y : posit8]) posit8
+  #:spec (+ x y)
+  #:fpcore (! :precision posit8 (+ x y))
+  #:fl posit8-add)
 
-(define-operator-impl (+ +.p16 posit16 posit16) posit16
-  [fl posit16-add])
+(define-operator-impl (+.p16 [x : posit16] [y : posit16]) posit16
+  #:spec (+ x y)
+  #:fpcore (! :precision posit16 (+ x y))
+  #:fl posit16-add)
 
-(define-operator-impl (+ +.p32 posit32 posit32) posit32
-  [fl posit32-add])
+(define-operator-impl (+.p32 [x : posit32] [y : posit32]) posit32
+  #:spec (+ x y)
+  #:fpcore (! :precision posit32 (+ x y))
+  #:fl posit32-add)
 
-(define-operator-impl (neg neg.p8 posit8) posit8
-  [fl posit8-neg])
+(define-operator-impl (neg.p8 [x : posit8]) posit8
+  #:spec (neg x)
+  #:fpcore (! :precision posit8 (- x))
+  #:fl posit8-neg)
 
-(define-operator-impl (neg neg.p16 posit16) posit16
-  [fl posit16-neg])
+(define-operator-impl (neg.p16 [x : posit16]) posit16
+  #:spec (neg x)
+  #:fpcore (! :precision posit16 (- x))
+  #:fl posit16-neg)
 
-(define-operator-impl (neg neg.p32 posit32) posit32
-  [fl posit32-neg])
+(define-operator-impl (neg.p32 [x : posit32]) posit32
+  #:spec (neg x)
+  #:fpcore (! :precision posit32 (- x))
+  #:fl posit32-neg)
 
-(define-operator-impl (- -.p8 posit8 posit8) posit8
-  [fl posit8-sub])
+(define-operator-impl (-.p8 [x : posit8] [y : posit8]) posit8
+  #:spec (- x y)
+  #:fpcore (! :precision posit8 (- x y))
+  #:fl posit8-sub)
 
-(define-operator-impl (- -.p16 posit16 posit16) posit16
-  [fl posit16-sub])
+(define-operator-impl (-.p16 [x : posit16] [y : posit16]) posit16
+  #:spec (- x y)
+  #:fpcore (! :precision posit16 (- x y))
+  #:fl posit16-sub)
 
-(define-operator-impl (- -.p32 posit32 posit32) posit32
-  [fl posit32-sub])
+(define-operator-impl (-.p32 [x : posit32] [y : posit32]) posit32
+  #:spec (- x y)
+  #:fpcore (! :precision posit32 (- x y))
+  #:fl posit32-sub)
 
-(define-operator-impl (* *.p8 posit8 posit8) posit8
-  [fl posit8-mul])
+(define-operator-impl (*.p8 [x : posit8] [y : posit8]) posit8
+  #:spec (* x y)
+  #:fpcore (! :precision posit8 (* x y))
+  #:fl posit8-mul)
 
-(define-operator-impl (* *.p16 posit16 posit16) posit16
-  [fl posit16-mul])
+(define-operator-impl (*.p16 [x : posit16] [y : posit16]) posit16
+  #:spec (* x y)
+  #:fpcore (! :precision posit16 (* x y))
+  #:fl posit16-mul)
 
-(define-operator-impl (* *.p32 posit32 posit32) posit32
-  [fl posit32-mul])
+(define-operator-impl (*.p32 [x : posit32] [y : posit32]) posit32
+  #:spec (* x y)
+  #:fpcore (! :precision posit32 (* x y))
+  #:fl posit32-mul)
 
-(define-operator-impl (/ /.p8 posit8 posit8) posit8
-  [fl posit8-div])
+(define-operator-impl (/.p8 [x : posit8] [y : posit8]) posit8
+  #:spec (/ x y)
+  #:fpcore (! :precision posit8 (/ x y))
+  #:fl posit8-div)
 
-(define-operator-impl (/ /.p16 posit16 posit16) posit16
-  [fl posit16-div])
+(define-operator-impl (/.p16 [x : posit16] [y : posit16]) posit16
+  #:spec (/ x y)
+  #:fpcore (! :precision posit16 (/ x y))
+  #:fl posit16-div)
 
-(define-operator-impl (/ /.p32 posit32 posit32) posit32
-  [fl posit32-div])
+(define-operator-impl (/.p32 [x : posit32] [y : posit32]) posit32
+  #:spec (/ x y)
+  #:fpcore (! :precision posit32 (/ x y))
+  #:fl posit32-div)
 
-(define-operator-impl (sqrt sqrt.p8 posit8) posit8
-  [fl posit8-sqrt])
+(define-operator-impl (sqrt.p8 [x : posit8]) posit8
+  #:spec (sqrt x)
+  #:fpcore (! :precision posit8 (sqrt x))
+  #:fl posit8-sqrt)
 
-(define-operator-impl (sqrt sqrt.p16 posit16) posit16
-  [fl posit16-sqrt])
+(define-operator-impl (sqrt.p16 [x : posit16]) posit16
+  #:spec (sqrt x)
+  #:fpcore (! :precision posit16 (sqrt x))
+  #:fl posit16-sqrt)
 
-(define-operator-impl (sqrt sqrt.p32 posit32) posit32
-  [fl posit32-sqrt])
+(define-operator-impl (sqrt.p32 [x : posit32]) posit32
+  #:spec (sqrt x)
+  #:fpcore (! :precision posit32 (sqrt x))
+  #:fl posit32-sqrt)
 
-(define-operator-impl (== ==.p8 posit8 posit8) bool
-  [fl posit8=])
+(define-operator-impl (==.p8 [x : posit8] [y : posit8]) bool
+  #:spec (== x y)
+  #:fpcore (! :precision (== x y))
+  #:fl posit8=)
 
-(define-operator-impl (== ==.p16 posit16 posit16) bool
-  [fl posit16=])
+(define-operator-impl (==.p16 [x : posit16] [y : posit16]) bool
+  #:spec (== x y)
+  #:fpcore (! :precision (== x y))
+  #:fl posit16=)
 
-(define-operator-impl (== ==.p32 posit32 posit32) bool
-  [fl posit32=])
+(define-operator-impl (==.p32 [x : posit32] [y : posit32]) bool
+  #:spec (== x y)
+  #:fpcore (! :precision (== x y))
+  #:fl posit32=)
 
-(define-operator-impl (!= !=.p8 posit8 posit8) bool
-  [fl (negate posit8=)])
+(define-operator-impl (!=.p8 [x : posit8] [y : posit8]) bool
+  #:spec (!= x y)
+  #:fpcore (! :precision (!= x y))
+  #:fl (negate posit8=))
 
-(define-operator-impl (!= !=.p16 posit16 posit16) bool
-  [fl (negate posit16=)])
+(define-operator-impl (!=.p16 [x : posit16] [y : posit16]) bool
+  #:spec (!= x y)
+  #:fpcore (! :precision (!= x y))
+  #:fl (negate posit16=))
 
-(define-operator-impl (!= !=.p32 posit32 posit32) bool
-  [fl (negate posit32=)])
+(define-operator-impl (!=.p32 [x : posit32] [y : posit32]) bool
+  #:spec (!= x y)
+  #:fpcore (! :precision (!= x y))
+  #:fl (negate posit32=))
 
-(define-operator-impl (< <.p8 posit8 posit8) bool
-  [fl posit8<])
+(define-operator-impl (<.p8 [x : posit8] [y : posit8]) bool
+  #:spec (< x y)
+  #:fpcore (! :precision (< x y))
+  #:fl posit8<)
 
-(define-operator-impl (< <.p16 posit16 posit16) bool
-  [fl posit16<])
+(define-operator-impl (<.p16 [x : posit16] [y : posit16]) bool
+  #:spec (< x y)
+  #:fpcore (! :precision (< x y))
+  #:fl posit16<)
 
-(define-operator-impl (< <.p32 posit32 posit32) bool
-  [fl posit32<])
+(define-operator-impl (<.p32 [x : posit32] [y : posit32]) bool
+  #:spec (< x y)
+  #:fpcore (! :precision (< x y))
+  #:fl posit32<)
 
-(define-operator-impl (> >.p8 posit8 posit8) bool
-  [fl posit8>])
+(define-operator-impl (>.p8 [x : posit8] [y : posit8]) bool
+  #:spec (> x y)
+  #:fpcore (! :precision (> x y))
+  #:fl posit8>)
 
-(define-operator-impl (> >.p16 posit16 posit16) bool
-  [fl posit16>])
+(define-operator-impl (>.p16 [x : posit16] [y : posit16]) bool
+  #:spec (> x y)
+  #:fpcore (! :precision (> x y))
+  #:fl posit16>)
 
-(define-operator-impl (> >.p32 posit32 posit32) bool
-  [fl posit32>])
+(define-operator-impl (>.p32 [x : posit32] [y : posit32]) bool
+  #:spec (> x y)
+  #:fpcore (! :precision (> x y))
+  #:fl posit32>)
 
-(define-operator-impl (<= <=.p8 posit8 posit8) bool
-  [fl posit8<=])
+(define-operator-impl (<=.p8 [x : posit8] [y : posit8]) bool
+  #:spec (<= x y)
+  #:fpcore (! :precision (<= x y))
+  #:fl posit8<=)
 
-(define-operator-impl (<= <=.p16 posit16 posit16) bool
-  [fl posit16<=])
+(define-operator-impl (<=.p16 [x : posit16] [y : posit16]) bool
+  #:spec (<= x y)
+  #:fpcore (! :precision (<= x y))
+  #:fl posit16<=)
 
-(define-operator-impl (<= <=.p32 posit32 posit32) bool
-  [fl posit32<=])
+(define-operator-impl (<=.p32 [x : posit32] [y : posit32]) bool
+  #:spec (<= x y)
+  #:fpcore (! :precision (<= x y))
+  #:fl posit32<=)
 
-(define-operator-impl (>= >=.p8 posit8 posit8) bool
-  [fl posit8>=])
+(define-operator-impl (>=.p8 [x : posit8] [y : posit8]) bool
+  #:spec (>= x y)
+  #:fpcore (! :precision (>= x y))
+  #:fl posit8>=)
 
-(define-operator-impl (>= >=.p16 posit16 posit16) bool
-  [fl posit16>=])
+(define-operator-impl (>=.p16 [x : posit16] [y : posit16]) bool
+  #:spec (>= x y)
+  #:fpcore (! :precision (>= x y))
+  #:fl posit16>=)
 
-(define-operator-impl (>= >=.p32 posit32 posit32) bool
-  [fl posit32>=])
+(define-operator-impl (>=.p32 [x : posit32] [y : posit32]) bool
+  #:spec (>= x y)
+  #:fpcore (! :precision (>= x y))
+  #:fl posit32>=)
 
 ;; Posit/float implementations
 
-(define-operator-impl (cast binary64->posit8 binary64) posit8
-  [fl double->posit8])
+(define-operator-impl (binary64->posit8 [x : binary64]) posit8
+  #:spec x
+  #:fpcore (! :precision posit8 (cast x))
+  #:fl double->posit8
+  #:op cast)
 
-(define-operator-impl (cast binary64->posit16 binary64) posit16
-  [fl double->posit16])
+(define-operator-impl (binary64->posit16 [x : binary64]) posit16
+  #:spec x
+  #:fpcore (! :precision posit16 (cast x))
+  #:fl double->posit16
+  #:op cast)
 
-(define-operator-impl (cast binary64->posit32 binary64) posit32
-  [fl double->posit32])
+(define-operator-impl (binary64->posit32 [x : binary64]) posit32
+  #:spec x
+  #:fpcore (! :precision posit32 (cast x))
+  #:fl double->posit32
+  #:op cast)
 
-(define-operator-impl (cast posit8->binary64 posit8) binary64
-  [fl posit8->double])
+(define-operator-impl (posit8->binary64 [x : posit8]) binary64
+  #:spec x
+  #:fpcore (! :precision binary64 (cast x))
+  #:fl posit8->double
+  #:op cast)
 
-(define-operator-impl (cast posit16->binary64 posit16) binary64
-  [fl posit16->double])
+(define-operator-impl (posit16->binary64 [x : posit16]) binary64
+  #:spec x
+  #:fpcore (! :precision binary64 (cast x))
+  #:fl posit16->double
+  #:op cast)
 
-(define-operator-impl (cast posit32->binary64 posit32) binary64
-  [fl posit32->double])
+(define-operator-impl (posit32->binary64 [x : posit32]) binary64
+  #:spec x
+  #:fpcore (! :precision binary64 (cast x))
+  #:fl posit32->double
+  #:op cast)
 
 ;; Quire/float implementations 
 
-(define-operator-impl (cast binary64->quire8 binary64) quire8
-  [fl double->quire8])
+(define-operator-impl (binary64->quire8 [x : binary64]) quire8
+  #:spec x
+  #:fpcore (! :precision quire8 (cast x))
+  #:fl double->quire8
+  #:op cast)
 
-(define-operator-impl (cast binary64->quire16 binary64) quire16
-  [fl double->quire16])
+(define-operator-impl (binary64->quire16 [x : binary64]) quire16
+  #:spec x
+  #:fpcore (! :precision quire16 (cast x))
+  #:fl double->quire16
+  #:op cast)
 
-(define-operator-impl (cast binary64->quire32 binary64) quire32
-  [fl double->quire32])
+(define-operator-impl (binary64->quire32 [x : binary64]) quire32
+  #:spec x
+  #:fpcore (! :precision quire32 (cast x))
+  #:fl double->quire32
+  #:op cast)
 
-(define-operator-impl (cast quire8->binary64 quire8) binary64
-  [fl quire8->double])
+(define-operator-impl (quire8->binary64 [x : quire8]) binary64
+  #:spec x
+  #:fpcore (! :precision binary64 (cast x))
+  #:fl quire8->double
+  #:op cast)
 
-(define-operator-impl (cast quire16->binary64 quire16) binary64
-  [fl quire16->double])
+(define-operator-impl (quire16->binary64 [x : quire16]) binary64
+  #:spec x
+  #:fpcore (! :precision binary64 (cast x))
+  #:fl quire16->double
+  #:op cast)
 
-(define-operator-impl (cast quire32->binary64 quire32) binary64
-  [fl quire32->double])
+(define-operator-impl (quire32->binary64 [x : quire32]) binary64
+  #:spec x
+  #:fpcore (! :precision binary64 (cast x))
+  #:fl quire32->double
+  #:op cast)
 
 ;; Quire/posit fused ops
 
@@ -286,44 +394,67 @@
   [ival (λ (x y z) (ival-sub x (ival-mult y z)))])
 
 ;; Quire/posit fused impl
+(define-operator-impl (quire8-mul-add [x : quire8] [y : posit8] [z : posit8]) quire8
+  #:fl quire8-fdp-add
+  #:op fdp)
 
-(define-operator-impl (fdp quire8-mul-add quire8 posit8 posit8) quire8
-  [fl quire8-fdp-add])
+(define-operator-impl (quire16-mul-add [x : quire16] [y : posit16] [z : posit16]) quire16
+  #:fl quire16-fdp-add
+  #:op fdp)
 
-(define-operator-impl (fdp quire16-mul-add quire16 posit16 posit16) quire16
-  [fl quire16-fdp-add])
+(define-operator-impl (quire32-mul-add [x : quire32] [y : posit32] [z : posit32]) quire32
+  #:fl quire32-fdp-add
+  #:op fdp)
 
-(define-operator-impl (fdp quire32-mul-add quire32 posit32 posit32) quire32
-  [fl quire32-fdp-add])
+(define-operator-impl (quire8-mul-sub [x : quire8] [y : posit8] [z : posit8]) quire8
+  #:fl quire8-fdp-sub
+  #:op fdm)
 
-(define-operator-impl (fdm quire8-mul-sub quire8 posit8 posit8) quire8
-  [fl quire8-fdp-sub] [inherit 'mul-sub])
+(define-operator-impl (quire16-mul-sub [x : quire16] [y : posit16] [z : posit16]) quire16
+  #:fl quire16-fdp-sub
+  #:op fdm)
 
-(define-operator-impl (fdm quire16-mul-sub quire16 posit16 posit16) quire16
-  [fl quire16-fdp-sub] [inherit 'mul-sub])
-
-(define-operator-impl (fdm quire32-mul-sub quire32 posit32 posit32) quire32
-  [fl quire32-fdp-sub])
+(define-operator-impl (quire32-mul-sub [x : quire32] [y : posit32] [z : posit32]) quire32
+  #:fl quire32-fdp-sub
+  #:op fdm)
 
 ;; Quire/posit impl
 
-(define-operator-impl (cast quire8->posit8 quire8) posit8
-  [fl quire8->posit8])
+(define-operator-impl (quire8->posit8 [x : quire8]) posit8
+  #:spec x
+  #:fpcore (! :precision posit8 (cast x))
+  #:fl quire8->posit8
+  #:op cast)
 
-(define-operator-impl (cast quire16->posit16 quire16) posit16
-  [fl quire16->posit16])
+(define-operator-impl (quire16->posit16 [x : quire16]) posit16
+  #:spec x
+  #:fpcore (! :precision posit16 (cast x))
+  #:fl quire16->posit16
+  #:op cast)
 
-(define-operator-impl (cast quire32->posit32 quire32) posit32
-  [fl quire32->posit32])
+(define-operator-impl (quire32->posit32 [x : quire32]) posit32
+  #:spec x
+  #:fpcore (! :precision posit32 (cast x))
+  #:fl quire32->posit32
+  #:op cast)
 
-(define-operator-impl (cast posit8->quire8 posit8) quire8
-  [fl posit8->quire8])
+(define-operator-impl (posit8->quire8 [x : posit8]) quire8
+  #:spec x
+  #:fpcore (! :precision quire8 (cast x))
+  #:fl posit8->quire8
+  #:op cast)
 
-(define-operator-impl (cast posit16->quire16 posit16) quire16
-  [fl posit16->quire16])
+(define-operator-impl (posit16->quire16 [x : posit16]) quire16
+  #:spec x
+  #:fpcore (! :precision quire16 (cast x))
+  #:fl posit16->quire16
+  #:op cast)
 
-(define-operator-impl (cast posit32->quire32 posit32) quire32
-  [fl posit32->quire32])
+(define-operator-impl (posit32->quire32 [x : posit32]) quire32
+  #:spec x
+  #:fpcore (! :precision quire32 (cast x))
+  #:fl posit32->quire32
+  #:op cast)
 
 ;; Defining the rules
 

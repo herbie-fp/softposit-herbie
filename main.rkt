@@ -123,119 +123,125 @@
 
 ;; Defining the operators
 
-(define-operator-impl (+.p8 [x : posit8] [y : posit8])
-                      posit8
-                      #:spec (+ x y)
-                      #:fpcore (! :precision posit8 (+ x y))
-                      #:fl posit8-add
-                      #:identities
-                      (#:commutes [distribute-neg-out (+.p8 (neg a) (neg b)) (neg (+.p8 a b))]
-                                  [+-lft-identity (+.p8 0 a) a]
-                                  [+-rgt-identity (+.p8 a 0) a]
-                                  [unsub-neg (+.p8 a (neg b)) (- a b)]))
+(define-operator-impl
+ (+.p8 [x : posit8] [y : posit8])
+ posit8
+ #:spec (+ x y)
+ #:fpcore (! :precision posit8 (+ x y))
+ #:fl posit8-add
+ #:identities (#:commutes [distribute-neg-out (+.p8 (neg.p8 a) (neg.p8 b)) (neg.p8 (+.p8 a b))]
+                          [+-lft-identity (+.p8 0 a) a]
+                          [+-rgt-identity (+.p8 a 0) a]
+                          [unsub-neg (+.p8 a (neg.p8 b)) (-.p8 a b)]))
 
-(define-operator-impl (+.p16 [x : posit16] [y : posit16])
-                      posit16
-                      #:spec (+ x y)
-                      #:fpcore (! :precision posit16 (+ x y))
-                      #:fl posit16-add
-                      #:identities
-                      (#:commutes [distribute-neg-out (+.p16 (neg a) (neg b)) (neg (+.p16 a b))]
-                                  [+-lft-identity (+.p16 0 a) a]
-                                  [+-rgt-identity (+.p16 a 0) a]
-                                  [unsub-neg (+.p16 a (neg b)) (- a b)]))
+(define-operator-impl
+ (+.p16 [x : posit16] [y : posit16])
+ posit16
+ #:spec (+ x y)
+ #:fpcore (! :precision posit16 (+ x y))
+ #:fl posit16-add
+ #:identities (#:commutes [distribute-neg-out (+.p16 (neg.p16 a) (neg.p16 b)) (neg.p16 (+.p16 a b))]
+                          [+-lft-identity (+.p16 0 a) a]
+                          [+-rgt-identity (+.p16 a 0) a]
+                          [unsub-neg (+.p16 a (neg.p16 b)) (-.p16 a b)]))
 
-(define-operator-impl (+.p32 [x : posit32] [y : posit32])
-                      posit32
-                      #:spec (+ x y)
-                      #:fpcore (! :precision posit32 (+ x y))
-                      #:fl posit32-add
-                      #:identities
-                      (#:commutes [distribute-neg-out (+.p32 (neg a) (neg b)) (neg (+.p32 a b))]
-                                  [+-lft-identity (+.p32 0 a) a]
-                                  [+-rgt-identity (+.p32 a 0) a]
-                                  [unsub-neg (+.p32 a (neg b)) (- a b)]))
+(define-operator-impl
+ (+.p32 [x : posit32] [y : posit32])
+ posit32
+ #:spec (+ x y)
+ #:fpcore (! :precision posit32 (+ x y))
+ #:fl posit32-add
+ #:identities (#:commutes [distribute-neg-out (+.p32 (neg.p32 a) (neg.p32 b)) (neg.p32 (+.p32 a b))]
+                          [+-lft-identity (+.p32 0 a) a]
+                          [+-rgt-identity (+.p32 a 0) a]
+                          [unsub-neg (+.p32 a (neg.p32 b)) (-.p32 a b)]))
 
 (define-operator-impl (neg.p8 [x : posit8])
                       posit8
                       #:spec (neg x)
                       #:fpcore (! :precision posit8 (- x))
                       #:fl posit8-neg
-                      #:identities (#:exact (neg.p8 x)
-                                            [distribute-lft-neg-in (neg.p8 (* a b)) (* (neg.p8 a) b)]
-                                            [distribute-rgt-neg-in (neg.p8 (* a b)) (* a (neg.p8 b))]
-                                            [distribute-neg-in (neg.p8 (+ a b)) (+ (neg a) (neg b))]
-                                            [distribute-neg-frac (neg.p8 (/ a b)) (/ (neg.p8 a) b)]
-                                            [distribute-neg-frac2 (neg.p8 (/ a b)) (/ a (neg.p8 b))]
-                                            [remove-double-neg (neg.p8 (neg.p8 a)) a]
-                                            [neg-sub0 (neg.p8 b) (- 0 b)]
-                                            [neg-mul-1 (neg.p8 a) (* -1 a)]))
+                      #:identities
+                      (#:exact (neg.p8 x)
+                               [distribute-lft-neg-in (neg.p8 (*.p8 a b)) (*.p8 (neg.p8 a) b)]
+                               [distribute-rgt-neg-in (neg.p8 (* a b)) (*.p8 a (neg.p8 b))]
+                               [distribute-neg-in (neg.p8 (+.p8 a b)) (+.p8 (neg.p8 a) (neg.p8 b))]
+                               [distribute-neg-frac (neg.p8 (/.p8 a b)) (/.p8 (neg.p8 a) b)]
+                               [distribute-neg-frac2 (neg.p8 (/.p8 a b)) (/.p8 a (neg.p8 b))]
+                               [remove-double-neg (neg.p8 (neg.p8 a)) a]
+                               [neg-sub0 (neg.p8 b) (-.p8 0 b)]
+                               [neg-mul-1 (neg.p8 a) (*.p8 -1 a)]))
 
-(define-operator-impl (neg.p16 [x : posit16])
-                      posit16
-                      #:spec (neg x)
-                      #:fpcore (! :precision posit16 (- x))
-                      #:fl posit16-neg
-                      #:identities (#:exact (neg.p16 x)
-                                    [distribute-lft-neg-in (neg.p16 (* a b)) (* (neg.p16 a) b)]
-                                    [distribute-rgt-neg-in (neg.p16 (* a b)) (* a (neg.p16 b))]
-                                    [distribute-neg-in (neg.p16 (+ a b)) (+ (neg a) (neg b))]
-                                    [distribute-neg-frac (neg.p16 (/ a b)) (/ (neg.p16 a) b)]
-                                    [distribute-neg-frac2 (neg.p16 (/ a b)) (/ a (neg.p16 b))]
-                                    [remove-double-neg (neg.p16 (neg.p16 a)) a]
-                                    [neg-sub0 (neg.p16 b) (- 0 b)]
-                                    [neg-mul-1 (neg.p16 a) (* -1 a)]))
+(define-operator-impl
+ (neg.p16 [x : posit16])
+ posit16
+ #:spec (neg x)
+ #:fpcore (! :precision posit16 (- x))
+ #:fl posit16-neg
+ #:identities (#:exact (neg.p16 x)
+                       [distribute-lft-neg-in (neg.p16 (*.p16 a b)) (*.p16 (neg.p16 a) b)]
+                       [distribute-rgt-neg-in (neg.p16 (*.p16 a b)) (*.p16 a (neg.p16 b))]
+                       [distribute-neg-in (neg.p16 (+.p16 a b)) (+.p16 (neg.p16 a) (neg.p16 b))]
+                       [distribute-neg-frac (neg.p16 (/.p16 a b)) (/.p16 (neg.p16 a) b)]
+                       [distribute-neg-frac2 (neg.p16 (/.p16 a b)) (/.p16 a (neg.p16 b))]
+                       [remove-double-neg (neg.p16 (neg.p16 a)) a]
+                       [neg-sub0 (neg.p16 b) (-.p16 0 b)]
+                       [neg-mul-1 (neg.p16 a) (*.p16 -1 a)]))
 
-(define-operator-impl (neg.p32 [x : posit32])
-                      posit32
-                      #:spec (neg x)
-                      #:fpcore (! :precision posit32 (- x))
-                      #:fl posit32-neg
-                      #:identities (#:exact (neg.p32 x)
-                                    [distribute-lft-neg-in (neg.p32 (* a b)) (* (neg.p32 a) b)]
-                                    [distribute-rgt-neg-in (neg.p32 (* a b)) (* a (neg.p32 b))]
-                                    [distribute-neg-in (neg.p32 (+ a b)) (+ (neg a) (neg b))]
-                                    [distribute-neg-frac (neg.p32 (/ a b)) (/ (neg.p32 a) b)]
-                                    [distribute-neg-frac2 (neg.p32 (/ a b)) (/ a (neg.p32 b))]
-                                    [remove-double-neg (neg.p32 (neg.p32 a)) a]
-                                    [neg-sub0 (neg.p32 b) (- 0 b)]
-                                    [neg-mul-1 (neg.p32 a) (* -1 a)]))
+(define-operator-impl
+ (neg.p32 [x : posit32])
+ posit32
+ #:spec (neg x)
+ #:fpcore (! :precision posit32 (- x))
+ #:fl posit32-neg
+ #:identities (#:exact (neg.p32 x)
+                       [distribute-lft-neg-in (neg.p32 (*.p32 a b)) (*.p32 (neg.p32 a) b)]
+                       [distribute-rgt-neg-in (neg.p32 (*.p32 a b)) (*.p32 a (neg.p32 b))]
+                       [distribute-neg-in (neg.p32 (+.p32 a b)) (+.p32 (neg.p32 a) (neg.p32 b))]
+                       [distribute-neg-frac (neg.p32 (/.p32 a b)) (/.p32 (neg.p32 a) b)]
+                       [distribute-neg-frac2 (neg.p32 (/.p32 a b)) (/.p32 a (neg.p32 b))]
+                       [remove-double-neg (neg.p32 (neg.p32 a)) a]
+                       [neg-sub0 (neg.p32 b) (-.p32 0 b)]
+                       [neg-mul-1 (neg.p32 a) (*.p32 -1 a)]))
 
 (define-operator-impl (-.p8 [x : posit8] [y : posit8])
                       posit8
                       #:spec (- x y)
                       #:fpcore (! :precision posit8 (- x y))
                       #:fl posit8-sub
-                      #:identities ([cancel-sign-sub (-.p8 a (* (neg b) c)) (+ a (* b c))]
-                                    [cancel-sign-sub-inv (-.p8 a (* b c)) (+ a (* (neg b) c))]
-                                    [+-inverses (-.p8 a a) 0]
-                                    [--rgt-identity (-.p8 a 0) a]
-                                    [sub0-neg (-.p8 0 a) (neg a)]
-                                    [sub-neg (-.p8 a b) (+ a (neg b))]))
+                      #:identities
+                      ([cancel-sign-sub (-.p8 a (*.p8 (neg b) c)) (+.p8 a (*.p8 b c))]
+                       [cancel-sign-sub-inv (-.p8 a (*.p8 b c)) (+.p8 a (*.p8 (neg b) c))]
+                       [+-inverses (-.p8 a a) 0]
+                       [--rgt-identity (-.p8 a 0) a]
+                       [sub0-neg (-.p8 0 a) (neg.p8 a)]
+                       [sub-neg (-.p8 a b) (+.p8 a (neg.p8 b))]))
 
 (define-operator-impl (-.p16 [x : posit16] [y : posit16])
                       posit16
                       #:spec (- x y)
                       #:fpcore (! :precision posit16 (- x y))
                       #:fl posit16-sub
-                      #:identities ([cancel-sign-sub (-.p16 a (* (neg b) c)) (+ a (* b c))]
-                                    [cancel-sign-sub-inv (-.p16 a (* b c)) (+ a (* (neg b) c))]
-                                    [+-inverses (-.p16 a a) 0]
-                                    [--rgt-identity (-.p16 a 0) a]
-                                    [sub0-neg (-.p16 0 a) (neg a)]
-                                    [sub-neg (-.p16 a b) (+ a (neg b))]))
+                      #:identities
+                      ([cancel-sign-sub (-.p16 a (*.p16 (neg.p16 b) c)) (+.p16 a (*.p16 b c))]
+                       [cancel-sign-sub-inv (-.p16 a (*.p16 b c)) (+.p16 a (*.p16 (neg.p16 b) c))]
+                       [+-inverses (-.p16 a a) 0]
+                       [--rgt-identity (-.p16 a 0) a]
+                       [sub0-neg (-.p16 0 a) (neg.p16 a)]
+                       [sub-neg (-.p16 a b) (+.p16 a (neg.p16 b))]))
 
 (define-operator-impl (-.p32 [x : posit32] [y : posit32])
                       posit32
                       #:spec (- x y)
                       #:fpcore (! :precision posit32 (- x y))
                       #:fl posit32-sub
-                      #:identities ([cancel-sign-sub (-.p32 a (* (neg b) c)) (+ a (* b c))]
-                                    [cancel-sign-sub-inv (-.p32 a (* b c)) (+ a (* (neg b) c))]
-                                    [+-inverses (-.p32 a a) 0]
-                                    [--rgt-identity (-.p32 a 0) a]
-                                    [sub0-neg (-.p32 0 a) (neg a)]
-                                    [sub-neg (-.p32 a b) (+ a (neg b))]))
+                      #:identities
+                      ([cancel-sign-sub (-.p32 a (*.p32 (neg.p32 b) c)) (+.p32 a (*.p32 b c))]
+                       [cancel-sign-sub-inv (-.p32 a (*.p32 b c)) (+.p32 a (*.p32 (neg b) c))]
+                       [+-inverses (-.p32 a a) 0]
+                       [--rgt-identity (-.p32 a 0) a]
+                       [sub0-neg (-.p32 0 a) (neg.p32 a)]
+                       [sub-neg (-.p32 a b) (+.p32 a (neg.p32 b))]))
 
 (define-operator-impl (*.p8 [x : posit8] [y : posit8])
                       posit8
@@ -243,16 +249,15 @@
                       #:fpcore (! :precision posit8 (* x y))
                       #:fl posit8-mul
                       #:identities
-                      (#:commutes [distribute-lft-neg-out (*.p8 (neg x) y) (neg (*.p8 x y))]
-                                  [distribute-rgt-neg-out (*.p8 x (neg y)) (neg (*.p8 x y))]
+                      (#:commutes [distribute-lft-neg-out (*.p8 (neg.p8 x) y) (neg.p8 (*.p8 x y))]
+                                  [distribute-rgt-neg-out (*.p8 x (neg.p8 y)) (neg.p8 (*.p8 x y))]
                                   [mul0-lft (*.p8 0 a) 0]
                                   [mul0-rgt (*.p8 a 0) 0]
                                   [*-lft-identity (*.p8 1 a) a]
                                   [*-rgt-identity (*.p8 a 1) a]
-                                  [mul-1-neg (*.p8 -1 a) (neg a)]
+                                  [mul-1-neg (*.p8 -1 a) (neg.p8 a)]
                                   [*-un-lft-identity a (*.p8 1 a)]
-                                  [sqr-neg (*.p8 (neg x) (neg x)) (*.p8 x x)]
-                                  [sqr-abs (*.p8 (fabs x) (fabs x)) (*.p8 x x)]))
+                                  [sqr-neg (*.p8 (neg.p8 x) (neg x)) (*.p8 x x)]))
 
 (define-operator-impl (*.p16 [x : posit16] [y : posit16])
                       posit16
@@ -260,16 +265,15 @@
                       #:fpcore (! :precision posit16 (* x y))
                       #:fl posit16-mul
                       #:identities
-                      (#:commutes [distribute-lft-neg-out (*.p16 (neg x) y) (neg (*.p16 x y))]
-                                  [distribute-rgt-neg-out (*.p16 x (neg y)) (neg (*.p16 x y))]
+                      (#:commutes [distribute-lft-neg-out (*.p16 (neg.p16 x) y) (neg.p16 (*.p16 x y))]
+                                  [distribute-rgt-neg-out (*.p16 x (neg.p16 y)) (neg.p16 (*.p16 x y))]
                                   [mul0-lft (*.p16 0 a) 0]
                                   [mul0-rgt (*.p16 a 0) 0]
                                   [*-lft-identity (*.p16 1 a) a]
                                   [*-rgt-identity (*.p16 a 1) a]
-                                  [mul-1-neg (*.p16 -1 a) (neg a)]
+                                  [mul-1-neg (*.p16 -1 a) (neg.p16 a)]
                                   [*-un-lft-identity a (*.p16 1 a)]
-                                  [sqr-neg (*.p16 (neg x) (neg x)) (*.p16 x x)]
-                                  [sqr-abs (*.p16 (fabs x) (fabs x)) (*.p16 x x)]))
+                                  [sqr-neg (*.p16 (neg.p16 x) (neg.p16 x)) (*.p16 x x)]))
 
 (define-operator-impl (*.p32 [x : posit32] [y : posit32])
                       posit32
@@ -277,52 +281,48 @@
                       #:fpcore (! :precision posit32 (* x y))
                       #:fl posit32-mul
                       #:identities
-                      (#:commutes [distribute-lft-neg-out (*.p32 (neg x) y) (neg (*.p32 x y))]
-                                  [distribute-rgt-neg-out (*.p32 x (neg y)) (neg (*.p32 x y))]
+                      (#:commutes [distribute-lft-neg-out (*.p32 (neg.p32 x) y) (neg.p32 (*.p32 x y))]
+                                  [distribute-rgt-neg-out (*.p32 x (neg.p32 y)) (neg.p32 (*.p32 x y))]
                                   [mul0-lft (*.p32 0 a) 0]
                                   [mul0-rgt (*.p32 a 0) 0]
                                   [*-lft-identity (*.p32 1 a) a]
                                   [*-rgt-identity (*.p32 a 1) a]
-                                  [mul-1-neg (*.p32 -1 a) (neg a)]
+                                  [mul-1-neg (*.p32 -1 a) (neg.p32 a)]
                                   [*-un-lft-identity a (*.p32 1 a)]
-                                  [sqr-neg (*.p32 (neg x) (neg x)) (*.p32 x x)]
-                                  [sqr-abs (*.p32 (fabs x) (fabs x)) (*.p32 x x)]))
+                                  [sqr-neg (*.p32 (neg.p32 x) (neg.p32 x)) (*.p32 x x)]))
 
 (define-operator-impl (/.p8 [x : posit8] [y : posit8])
                       posit8
                       #:spec (/ x y)
                       #:fpcore (! :precision posit8 (/ x y))
                       #:fl posit8-div
-                      #:identities ([distribute-frac-neg (/.p8 (neg x) y) (neg (/.p8 x y))]
-                                    [distribute-frac-neg2 (/.p8 x (neg y)) (neg (/.p8 x y))]
+                      #:identities ([distribute-frac-neg (/.p8 (neg.p8 x) y) (neg.p8 (/.p8 x y))]
+                                    [distribute-frac-neg2 (/.p8 x (neg.p8 y)) (neg.p8 (/.p8 x y))]
                                     [div0 (/.p8 0 a) 0]
                                     [*-inverses (/.p8 a a) 1]
-                                    [/-rgt-identity (/.p8 a 1) a]
-                                    [inv-pow (/.p8 1 a) (pow a -1)]))
+                                    [/-rgt-identity (/.p8 a 1) a]))
 
 (define-operator-impl (/.p16 [x : posit16] [y : posit16])
                       posit16
                       #:spec (/ x y)
                       #:fpcore (! :precision posit16 (/ x y))
                       #:fl posit16-div
-                      #:identities ([distribute-frac-neg (/.p16 (neg x) y) (neg (/.p16 x y))]
-                                    [distribute-frac-neg2 (/.p16 x (neg y)) (neg (/.p16 x y))]
+                      #:identities ([distribute-frac-neg (/.p16 (neg.p16 x) y) (neg.p16 (/.p16 x y))]
+                                    [distribute-frac-neg2 (/.p16 x (neg.p16 y)) (neg.p16 (/.p16 x y))]
                                     [div0 (/.p16 0 a) 0]
                                     [*-inverses (/.p16 a a) 1]
-                                    [/-rgt-identity (/.p16 a 1) a]
-                                    [inv-pow (/.p16 1 a) (pow a -1)]))
+                                    [/-rgt-identity (/.p16 a 1) a]))
 
 (define-operator-impl (/.p32 [x : posit32] [y : posit32])
                       posit32
                       #:spec (/ x y)
                       #:fpcore (! :precision posit32 (/ x y))
                       #:fl posit32-div
-                      #:identities ([distribute-frac-neg (/.p32 (neg x) y) (neg (/.p32 x y))]
-                                    [distribute-frac-neg2 (/.p32 x (neg y)) (neg (/.p32 x y))]
+                      #:identities ([distribute-frac-neg (/.p32 (neg.p32 x) y) (neg.p32 (/.p32 x y))]
+                                    [distribute-frac-neg2 (/.p32 x (neg.p32 y)) (neg.p32 (/.p32 x y))]
                                     [div0 (/.p32 0 a) 0]
                                     [*-inverses (/.p32 a a) 1]
-                                    [/-rgt-identity (/.p32 a 1) a]
-                                    [inv-pow (/.p32 1 a) (pow a -1)]))
+                                    [/-rgt-identity (/.p32 a 1) a]))
 
 (define-operator-impl (sqrt.p8 [x : posit8])
                       posit8
